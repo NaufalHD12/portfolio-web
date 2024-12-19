@@ -7,14 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --text-primary: #ffffff;
-            --text-secondary: #9ca3af;
-            --accent: #6366f1;
-            --hover-accent: #4f46e5;
-            --gradient-start: #6366f1;
-            --gradient-end: #4f46e5;
+            --bg-primary: #2f2f2f;
+            --bg-secondary: #3f3f3f;
+            --text-primary: #e4e4e4;
+            --text-secondary: #b8b8b8;
+            --accent: #a67c52;
+            --hover-accent: #8b5e34;
+            --gradient-start: #a67c52;
+            --gradient-end: #8b5e34;
+
         }
 
         * {
@@ -423,10 +424,17 @@
     </style>
 </head>
 <body>
-    <!-- Previous HTML content remains the same -->
-    <div class="mobile-menu">
-        <i class="fas fa-bars"></i>
+    <!-- Added loading screen -->
+    <div class="loading">
+        <div class="loading-spinner"></div>
     </div>
+
+    <!-- Added scroll progress bar -->
+    <div class="scroll-progress"></div>
+
+    <!-- Added skip link for accessibility -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+    
     <header>
         <nav class="container">
             <div class="logo">NH</div>
@@ -477,8 +485,8 @@
         <div class="project-card">
             <h2 class="project-title">Anime Recommendation System</h2>
             <div class="project-tags">
-                <span class="tag">Machine Learning</span>
                 <span class="tag">Python</span>
+                <span class="tag">Machine Learning</span>
                 <span class="tag">Data Analysis</span>
                 <span class="tag">TensorFlow</span>
                 <span class="tag">Content-Based Filtering</span>
@@ -516,8 +524,8 @@
         <div class="project-card">
             <h2 class="project-title">Student Performance Predictor</h2>
             <div class="project-tags">
-                <span class="tag">Machine Learning</span>
                 <span class="tag">Python</span>
+                <span class="tag">Machine Learning</span>
                 <span class="tag">Data Analysis</span>
                 <span class="tag">Regression</span>
                 <span class="tag">Random Forest</span>
@@ -538,7 +546,7 @@
                     <div class="metric-label">Features Analyzed</div>
                 </div>
                 <div class="metric">
-                    <div class="metric-value">0.0009</div>
+                    <div class="metric-value">0.9</div>
                     <div class="metric-label">MAE</div>
                 </div>
             </div>
@@ -552,12 +560,14 @@
         <div class="project-card">
             <h2 class="project-title">AcneScan</h2>
             <div class="project-tags">
+                <span class="tag">Python</span>
                 <span class="tag">Machine Learning</span>
                 <span class="tag">Computer Vision</span>
                 <span class="tag">TensorFlow</span>
                 <span class="tag">Image Classification</span>
                 <span class="tag">CNN</span>
                 <span class="tag">Flask</span>
+                <span class="tag">Cloud Run</span>
             </div>
             <p class="project-description">
                 An advanced machine learning project for detecting and classifying different types of acne using sophisticated image processing 
@@ -588,12 +598,12 @@
         <div class="project-card">
             <h2 class="project-title">Steam Reviews Sentiment Analysis</h2>
             <div class="project-tags">
+                <span class="tag">Python</span>
                 <span class="tag">Machine Learning</span>
                 <span class="tag">Natural Language Processing</span>
                 <span class="tag">Scikit-learn</span>
                 <span class="tag">Text Classification</span>
                 <span class="tag">Naive Bayes</span>
-                <span class="tag">TF-IDF</span>
             </div>
             <p class="project-description">
                 A comprehensive machine learning project analyzing sentiment in Steam game reviews using advanced text processing 
@@ -623,11 +633,13 @@
         <div class="project-card">
             <h2 class="project-title">E-Commerce Data Analysis Project</h2>
             <div class="project-tags">
-                <span class="tag">Data Analysis</span>
+                <span class="tag">Python</span>
                 <span class="tag">Pandas</span>
+                <span class="tag">Data Analysis</span>
                 <span class="tag">Visualization</span>
                 <span class="tag">Customer Segmentation</span>
                 <span class="tag">RFM Analysis</span>
+                <span class="tag">Streamlit</span>
             </div>
             <p class="project-description">
                 This project involves a comprehensive analysis of an e-commerce dataset to uncover insights that can inform
@@ -640,7 +652,7 @@
                     <div class="metric-label">Analytics Sections</div>
                 </div>
                 <div class="metric">
-                    <div class="metric-value">100K</div>
+                    <div class="metric-value">100K+</div>
                     <div class="metric-label">Data Analyzed</div>
                 </div>
                 <div class="metric">
@@ -707,44 +719,76 @@
             </a>
         </div>
     </section>
+
+    <button class="theme-toggle" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+    </button>
+
     <script>
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+        // Loading screen
+        window.addEventListener('load', () => {
+            document.querySelector('.loading').style.display = 'none';
         });
 
-        // Mobile menu toggle
+        // Scroll progress indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.scroll-progress').style.width = scrolled + '%';
+            
+            // Header scroll effect
+            if (window.scrollY > 50) {
+                document.querySelector('header').classList.add('scrolled');
+            } else {
+                document.querySelector('header').classList.remove('scrolled');
+            }
+        });
+
+        // Project cards reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Theme toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            const icon = themeToggle.querySelector('i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        // Mobile menu improvements
         const mobileMenu = document.querySelector('.mobile-menu');
         const navLinks = document.querySelector('.nav-links');
 
         mobileMenu.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            mobileMenu.setAttribute('aria-expanded', 
+                mobileMenu.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'
+            );
         });
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.nav-links') && !e.target.closest('.mobile-menu')) {
                 navLinks.classList.remove('active');
+                mobileMenu.setAttribute('aria-expanded', 'false');
             }
-        });
-
-        // Scroll reveal animation
-        window.addEventListener('scroll', () => {
-            const projectCards = document.querySelectorAll('.project-card');
-            projectCards.forEach(card => {
-                const cardTop = card.getBoundingClientRect().top;
-                const triggerBottom = window.innerHeight * 0.8;
-
-                if (cardTop < triggerBottom) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }
-            });
         });
     </script>
 </body>
